@@ -37,6 +37,34 @@ def print_flow_station(prob, fs_names, file=sys.stdout):
     print('-'*len_header, file=file, flush=True)
 
 
+def print_splitter(prob, element_names, file=sys.stdout):
+
+    len_header = 23+20*5
+
+    print("-"*len_header, file=file, flush=True)
+    print("                                                        SPLITTER PROPERTIES", file=file, flush=True)
+    print("-"*len_header, file=file, flush=True)
+
+    line_tmpl = '{:<20}|  '+'{:>20}'*5
+    print(line_tmpl.format('Splitter', 'bpr', 'core_mach', 'bypass_mach', 'target_core', 'target_bypass'),
+          file=file, flush=True)
+    print(line_tmpl.format('Units', '[-]', '[-]', '[-]', '[-]', '[-]'), file=file, flush=True)
+    print("-" * len_header, file=file, flush=True)
+    
+    # Check splitter properties
+    print()
+
+    line_tmpl = '{:<20}|  '+'{:20.3f}'*5
+    for e_name in element_names:
+        sys = prob.model._get_subsystem(e_name)
+        print(line_tmpl.format(e_name, prob[e_name+'.BPR'][0], 0,
+                               0, 0,
+                               0),
+              file=file, flush=True)
+    
+    print("-" * len_header, file=file, flush=True)
+
+
 def print_compressor(prob, element_names, file=sys.stdout):
 
     len_header = 17+12*12
