@@ -171,3 +171,59 @@ AXI5.output_data.append({'name': 'effMap', 'values': AXI5.effMap,
                         'default': np.mean(AXI5.effMap), 'units': None})
 AXI5.output_data.append({'name': 'PRmap', 'values': AXI5.PRmap,
                         'default': 5.2, 'units': None})
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# ==========================
+# SELECT ONE MAP (index 0)
+# ==========================
+Wc = AXI5.WcMap[0]      # Corrected flow
+PR = AXI5.PRmap[0]      # Pressure ratio
+EFF = AXI5.effMap[0]    # Efficiency
+
+n_speed, n_pts = Wc.shape
+
+# ==========================
+# PLOT COMPRESSOR MAP
+# ==========================
+plt.figure(figsize=(10, 7))
+
+# --- Plot speed lines ---
+for i in range(n_speed):
+    plt.plot(Wc[i, :], PR[i, :], '-o', linewidth=1)
+
+# # --- Efficiency contours ---
+# # Create scattered contour data
+# wc_flat = Wc.flatten()
+# pr_flat = PR.flatten()
+# eff_flat = EFF.flatten()
+
+# # Create contour levels
+# levels = np.linspace(np.min(eff_flat), np.max(eff_flat), 15)
+
+# # Grid for contouring
+# wc_grid = np.linspace(np.min(wc_flat), np.max(wc_flat), 200)
+# pr_grid = np.linspace(np.min(pr_flat), np.max(pr_flat), 200)
+# WC_grid, PR_grid = np.meshgrid(wc_grid, pr_grid)
+
+# # Interpolate efficiency onto grid
+# from scipy.interpolate import griddata
+# EFF_grid = griddata((wc_flat, pr_flat), eff_flat,
+#                     (WC_grid, PR_grid),
+#                     method='cubic')
+
+# # Plot contours
+# contours = plt.contour(WC_grid, PR_grid, EFF_grid,
+#                        levels=levels, linewidths=1.2)
+# plt.clabel(contours, inline=True, fontsize=8)
+
+# ==========================
+# Labels & Formatting
+# ==========================
+plt.xlabel("Corrected Mass Flow (Wc)")
+plt.ylabel("Pressure Ratio (PR)")
+plt.title("Fan / Compressor Map")
+plt.grid(True)
+plt.tight_layout()
+plt.show()
